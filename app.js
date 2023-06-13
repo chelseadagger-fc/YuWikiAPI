@@ -14,7 +14,9 @@ async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/booksDB');
 }
 
+
 // ////////////////////////////////////
+
 
 const bookSchema = {
     title: String,
@@ -25,12 +27,40 @@ const bookSchema = {
 const Book = mongoose.model("Book", bookSchema);
 
 
+// ////////////////////////////////////
+
+
 app.get("/books", function(req, res) {
     Book.find({})
         .then((foundBooks) => {
             res.send(foundBooks);
         })
+        .catch(function() {
+            console.log(error);
+        })
 })
+
+app.post("/books", function(req, res) {
+    console.log("Post request console.log:")
+    console.log("Title: " + req.body.title);
+    console.log("Author: " + req.body.author);
+    console.log("Content: " + req.body.content);
+
+    const newBook = new Book({
+        title: req.body.title,
+        author: req.body.author, 
+        content: req.body.content
+    });
+
+    newBook.save()
+        .then(function() {
+            res.send("Successfully added book.");
+        })
+        .catch(function() {
+            console.log(error);
+        })
+})
+
 
 
 

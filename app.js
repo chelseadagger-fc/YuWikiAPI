@@ -29,39 +29,36 @@ const Book = mongoose.model("Book", bookSchema);
 
 // ////////////////////////////////////
 
+app.route("/books")
+    .get((req, res) => {
+        Book.find({})
+            .then((foundBooks) => {
+                res.send(foundBooks);
+            })
+            .catch(function() {
+                console.log(error);
+            })
+    })
+    .post((req, res) => {
+        console.log("Post request console.log:")
+        console.log("Title: " + req.body.title);
+        console.log("Author: " + req.body.author);
+        console.log("Content: " + req.body.content);
 
-app.get("/books", function(req, res) {
-    Book.find({})
-        .then((foundBooks) => {
-            res.send(foundBooks);
-        })
-        .catch(function() {
-            console.log(error);
-        })
-})
+        const newBook = new Book({
+            title: req.body.title,
+            author: req.body.author, 
+            content: req.body.content
+        });
 
-app.post("/books", function(req, res) {
-    console.log("Post request console.log:")
-    console.log("Title: " + req.body.title);
-    console.log("Author: " + req.body.author);
-    console.log("Content: " + req.body.content);
-
-    const newBook = new Book({
-        title: req.body.title,
-        author: req.body.author, 
-        content: req.body.content
-    });
-
-    newBook.save()
-        .then(function() {
-            res.send("Successfully added book.");
-        })
-        .catch(function() {
-            console.log(error);
-        })
-})
-
-
+        newBook.save()
+            .then(function() {
+                res.send("Successfully added book.");
+            })
+            .catch(function() {
+                console.log(error);
+            })
+    })
 
 
 app.listen(3000, function() {

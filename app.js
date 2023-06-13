@@ -76,6 +76,31 @@ app.route("/books/:bookTitle")
                 console.log("No books with matching title found.");
             })
     })
+
+    .put(function(req,res) {
+        Book.findOneAndUpdate(
+            {title: req.params.bookTitle},
+            {title: req.body.title, author: req.body.author, content: req.body.content},
+            {overwrite: true})
+                .then(() => {
+                    res.send("Book successfully updated.");
+                })
+                .catch((error) => {
+                    res.send(error);
+                })
+    })
+
+    .patch(function(req,res) {
+        Book.findOneAndUpdate(
+            {title: req.params.bookTitle},
+            {$set: req.body})
+                .then(() => {
+                    res.send("Book field successfully updated.");
+                })
+                .catch((error) => {
+                    res.send(error);
+                })
+    })
 ;
     
 

@@ -101,6 +101,16 @@ app.route("/books/:bookTitle")
                     res.send(error);
                 })
     })
+
+    .delete(function(req,res) {
+        Book.deleteOne( {title: req.params.bookTitle} )
+            .then(() => {
+                res.send("Book has been successfully deleted.");
+            })
+            .catch ((error) => {
+                res.send(error);
+            })
+    })
 ;
     
 

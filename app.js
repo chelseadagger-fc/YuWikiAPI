@@ -30,6 +30,7 @@ const Book = mongoose.model("Book", bookSchema);
 // ////////////////////////////////////
 
 app.route("/books")
+
     .get((req, res) => {
         Book.find({})
             .then((foundBooks) => {
@@ -39,6 +40,7 @@ app.route("/books")
                 console.log(error);
             })
     })
+
     .post((req, res) => {
         console.log("Post request console.log:")
         console.log("Title: " + req.body.title);
@@ -59,6 +61,23 @@ app.route("/books")
                 console.log(error);
             })
     })
+;
+
+// //////////////////////////////////// specific target
+
+app.route("/books/:bookTitle")
+
+    .get(function(req,res) {
+        Book.findOne({title: req.params.bookTitle})
+            .then((foundBook) => {
+                res.send(foundBook);
+            })
+            .catch(function() {
+                console.log("No books with matching title found.");
+            })
+    })
+;
+    
 
 
 app.listen(3000, function() {
